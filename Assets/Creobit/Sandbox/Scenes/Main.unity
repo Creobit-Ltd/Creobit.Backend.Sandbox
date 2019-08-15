@@ -270,7 +270,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _titleId: 12513
   _catalogVersion: Default
-  _storeId: Default
+  _storeId: 
   _publicKey: 
 --- !u!4 &1588484878
 Transform:
@@ -317,7 +317,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _titleId: 12513
   _catalogVersion: Default
-  _storeId: Default
+  _storeId: 
   _customId: DFCD3F6447E4D116
 --- !u!4 &1739729096
 Transform:
@@ -408,7 +408,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _titleId: 12513
   _catalogVersion: Default
-  _storeId: Default
+  _storeId: 
   _appId: 695720
 --- !u!4 &1998843150
 Transform:

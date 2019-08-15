@@ -612,10 +612,12 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   webGLWasmStreaming: 0
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    1: CREOBIT_BACKEND_CUSTOMPLAYFAB;CREOBIT_BACKEND_PLAYFAB;CREOBIT_BACKEND_STEAM;CREOBIT_BACKEND_STEAMPLAYFAB
+    7: CREOBIT_BACKEND_CUSTOMPLAYFAB;CREOBIT_BACKEND_GOOGLEPLAY;CREOBIT_BACKEND_GOOGLEPLAYPLAYFAB;CREOBIT_BACKEND_PLAYFAB
   platformArchitecture: {}
   scriptingBackend:
-    Android: 1
+    Android: 0
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}
   incrementalIl2cppBuild: {}
