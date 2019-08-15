@@ -10,6 +10,7 @@ namespace Creobit.Backend
     {
         #region MonoBehaviour
 
+#if CREOBIT_BACKEND_GOOGLEPLAYPLAYFAB && CREOBIT_BACKEND_PLAYFAB
         private void Awake()
         {
             var playFabAuth = new PlayFabAuth(_titleId);
@@ -43,6 +44,7 @@ namespace Creobit.Backend
 
             _store = googlePlayPlayFabStore;
         }
+#endif
 
         private void Start()
         {
@@ -112,10 +114,10 @@ namespace Creobit.Backend
         private string _titleId = "12513";
 
         [SerializeField]
-        private string _catalogVersion = "Default";
+        private string _catalogVersion;
 
         [SerializeField]
-        private string _storeId = "Default";
+        private string _storeId;
 
         [Header("GooglePlay")]
 
