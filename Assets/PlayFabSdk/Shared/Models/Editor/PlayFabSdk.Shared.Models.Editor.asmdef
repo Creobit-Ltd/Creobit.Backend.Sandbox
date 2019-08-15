@@ -1,0 +1,17 @@
+{
+    "name": "PlayFabSdk.Shared.Models.Editor",
+    "references": [
+        "GUID:e3712bda3d9154148b1501247f1986ab",
+        "GUID:e4b4aa4e41d31314aa1a5a5cf788794a"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
