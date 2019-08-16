@@ -10,15 +10,10 @@ namespace Creobit.Backend
     {
         #region MonoBehaviour
 
-#if CREOBIT_BACKEND_GOOGLEPLAYPLAYFAB && CREOBIT_BACKEND_PLAYFAB
+#if CREOBIT_BACKEND_GOOGLEPLAY && CREOBIT_BACKEND_PLAYFAB
         private void Awake()
         {
             var playFabAuth = new PlayFabAuth(_titleId);
-            var googlePlayAuth = new GooglePlayAuth();
-            var googlePlayPlayFabAuth = new GooglePlayPlayFabAuth(playFabAuth, googlePlayAuth);
-
-            _auth = googlePlayPlayFabAuth;
-
             var playFabStore = new PlayFabStore(_catalogVersion, _storeId)
             {
                 CurrencyMap = new List<(string CurrencyId, string VirtualCurrency)>
@@ -32,16 +27,19 @@ namespace Creobit.Backend
                     ("_key", "Key")
                 }
             };
-            var googlePlayPlayFabStore = new GooglePlayPlayFabStore(playFabStore)
+
+            var googlePlayAuth = new GooglePlayAuth();
+            var googlePlayPlayFabAuth = new GooglePlayPlayFabAuth(playFabAuth, googlePlayAuth);
+            var googlePlayPlayFabStore = new GooglePlayPlayFabStore(playFabStore, _publicKey)
             {
                 ProductMap = new List<(string ProductId, ProductType ProductType)>
                 {
                     ("Box", ProductType.Consumable),
                     ("Key", ProductType.Consumable)
-                },
-                PublicKey = _publicKey
+                }
             };
-
+        
+            _auth = googlePlayPlayFabAuth;
             _store = googlePlayPlayFabStore;
         }
 #endif

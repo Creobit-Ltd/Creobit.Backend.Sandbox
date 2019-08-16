@@ -11,6 +11,7 @@ namespace Creobit.Backend
         private void Awake()
         {
             var playFabAuth = new PlayFabAuth(_titleId);
+
             var steamAuth = new SteamAuth(_appId);
             var steamPlayFabAuth = new SteamPlayFabAuth(playFabAuth, steamAuth);
 
