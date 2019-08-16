@@ -9,14 +9,10 @@ namespace Creobit.Backend
     {
         #region MonoBehaviour
 
-#if CREOBIT_BACKEND_CUSTOMPLAYFAB && CREOBIT_BACKEND_PLAYFAB
+#if CREOBIT_BACKEND_PLAYFAB
         private void Awake()
         {
             var playFabAuth = new PlayFabAuth(_titleId);
-            var customPlayFabAuth = new CustomPlayFabAuth(playFabAuth, _customId);
-
-            _auth = customPlayFabAuth;
-
             var playFabStore = new PlayFabStore(_catalogVersion, _storeId)
             {
                 CurrencyMap = new List<(string CurrencyId, string VirtualCurrency)>
@@ -31,6 +27,9 @@ namespace Creobit.Backend
                 }
             };
 
+            var customPlayFabAuth = new CustomPlayFabAuth(playFabAuth, _customId);
+
+            _auth = customPlayFabAuth;
             _store = playFabStore;
         }
 #endif

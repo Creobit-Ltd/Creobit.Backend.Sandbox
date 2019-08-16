@@ -7,10 +7,11 @@ namespace Creobit.Backend
     {
         #region MonoBehaviour
 
-#if CREOBIT_BACKEND_GOOGLEPLAYPLAYFAB && CREOBIT_BACKEND_PLAYFAB
+#if CREOBIT_BACKEND_GOOGLEPLAY && CREOBIT_BACKEND_PLAYFAB
         private void Awake()
         {
             var playFabAuth = new PlayFabAuth(_titleId);
+
             var googlePlayAuth = new GooglePlayAuth();
             var googlePlayPlayFabAuth = new GooglePlayPlayFabAuth(playFabAuth, googlePlayAuth);
 
