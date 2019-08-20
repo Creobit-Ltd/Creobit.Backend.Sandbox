@@ -32,7 +32,8 @@ namespace Creobit.Backend
                 () =>
                 {
                     Debug.Log("Auth.Login: Complete");
-                    Debug.Log($"User.UserName: {_user.Name}");
+                    Debug.Log($"User.AvatarUrl: {_user.AvatarUrl}");
+                    Debug.Log($"User.Name: {_user.Name}");
                 },
                 () =>
                 {
@@ -50,7 +51,8 @@ namespace Creobit.Backend
                     () =>
                     {
                         Debug.Log("User.Refresh: Complete");
-                        Debug.Log($"User.UserName: {_user.Name}");
+                        Debug.Log($"User.AvatarUrl: {_user.AvatarUrl}");
+                        Debug.Log($"User.Name: {_user.Name}");
                     },
                     () =>
                     {
