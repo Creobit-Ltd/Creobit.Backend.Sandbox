@@ -11,20 +11,29 @@ namespace Creobit.Backend
         private void Awake()
         {
             var playFabAuth = new PlayFabAuth(_titleId);
+            var playFabUser = new PlayFabUser(playFabAuth);
 
             var steamAuth = new SteamAuth(_appId);
+            var steamUser = new SteamUser();
+
             var steamPlayFabAuth = new SteamPlayFabAuth(playFabAuth, steamAuth);
+            var steamPlayFabUser = new SteamPlayFabUser(playFabUser, steamUser);
 
             _auth = steamPlayFabAuth;
+            _user = steamPlayFabUser;
         }
 #endif
 
         private void Start()
         {
+            Debug.Log("Auth.Login: Start");
+
             _auth.Login(
                 () =>
                 {
                     Debug.Log("Auth.Login: Complete");
+                    Debug.Log($"User.AvatarUrl: {_user.AvatarUrl}");
+                    Debug.Log($"User.Name: {_user.Name}");
                 },
                 () =>
                 {
@@ -32,10 +41,31 @@ namespace Creobit.Backend
                 });
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                Debug.Log("User.Refresh: Start");
+
+                _user.Refresh(
+                    () =>
+                    {
+                        Debug.Log("User.Refresh: Complete");
+                        Debug.Log($"User.AvatarUrl: {_user.AvatarUrl}");
+                        Debug.Log($"User.Name: {_user.Name}");
+                    },
+                    () =>
+                    {
+                        Debug.LogError("User.Refresh: Failure");
+                    });
+            }
+        }
+
         #endregion
         #region SteamPlayFabLoginExample
 
         private IAuth _auth;
+        private IUser _user;
 
         [Header("PlayFab")]
 
