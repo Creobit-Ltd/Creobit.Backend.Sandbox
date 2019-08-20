@@ -162,9 +162,11 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.creobit.sandbox
+    Android: com.creobit.backend.sandbox
     Standalone: com.Company.ProductName
-  buildNumber: {}
+    iPhone: com.creobit.backend.sandbox
+  buildNumber:
+    iPhone: 1
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 25
   AndroidTargetSdkVersion: 0
