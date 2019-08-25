@@ -14,7 +14,7 @@ namespace PlayFab
     public partial class PlayFabMultiplayerInstanceAPI : IPlayFabInstanceApi
     {
         public readonly PlayFabApiSettings apiSettings = null;
-        private readonly PlayFabAuthenticationContext authenticationContext = null;
+        public readonly PlayFabAuthenticationContext authenticationContext = null;
 
         public PlayFabMultiplayerInstanceAPI(PlayFabAuthenticationContext context)
         {
@@ -29,11 +29,6 @@ namespace PlayFab
                 throw new PlayFabException(PlayFabExceptionCode.AuthContextRequired, "Context cannot be null, create a PlayFabAuthenticationContext for each player in advance, or call <PlayFabClientInstanceAPI>.GetAuthenticationContext()");
             apiSettings = settings;
             authenticationContext = context;
-        }
-
-        public PlayFabAuthenticationContext GetAuthenticationContext()
-        {
-            return authenticationContext;
         }
 
         /// <summary>
@@ -365,6 +360,16 @@ namespace PlayFab
             var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
             var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
             PlayFabHttp.MakeApiCall("/MultiplayerServer/ListMultiplayerServers", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
+        /// Lists quality of service servers for party.
+        /// </summary>
+        public void ListPartyQosServers(ListPartyQosServersRequest request, Action<ListPartyQosServersResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            PlayFabHttp.MakeApiCall("/MultiplayerServer/ListPartyQosServers", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
         }
 
         /// <summary>
