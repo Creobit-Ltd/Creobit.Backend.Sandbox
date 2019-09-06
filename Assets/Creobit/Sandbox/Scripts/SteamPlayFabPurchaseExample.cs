@@ -1,5 +1,8 @@
-﻿using Creobit.Backend.Auth;
+﻿#if CREOBIT_BACKEND_PLAYFAB && CREOBIT_BACKEND_STEAM
 using System.Collections.Generic;
+#endif
+using Creobit.Backend.Auth;
+using Creobit.Backend.Store;
 using System.Linq;
 using UnityEngine;
 
@@ -8,7 +11,7 @@ namespace Creobit.Backend.Sandbox
     [DisallowMultipleComponent]
     public sealed class SteamPlayFabPurchaseExample : MonoBehaviour
     {
-        #region MonoBehaviour
+#region MonoBehaviour
 
 #if CREOBIT_BACKEND_PLAYFAB && CREOBIT_BACKEND_STEAM
         private void Awake()
@@ -93,8 +96,8 @@ namespace Creobit.Backend.Sandbox
             }
         }
 
-        #endregion
-        #region SteamPlayFabPurchaseExample
+#endregion
+#region SteamPlayFabPurchaseExample
 
         private IAuth _auth;
         private IStore _store;
@@ -115,6 +118,6 @@ namespace Creobit.Backend.Sandbox
         [SerializeField]
         private uint _appId = 695720;
 
-        #endregion
+#endregion
     }
 }

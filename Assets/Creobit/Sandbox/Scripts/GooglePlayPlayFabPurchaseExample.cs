@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Purchasing;
 #endif
 using Creobit.Backend.Auth;
+using Creobit.Backend.Store;
 using System.Linq;
 using UnityEngine;
 
