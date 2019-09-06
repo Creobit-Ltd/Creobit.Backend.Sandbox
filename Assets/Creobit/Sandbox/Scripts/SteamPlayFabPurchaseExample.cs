@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Creobit.Backend.Auth;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Creobit.Backend
+namespace Creobit.Backend.Sandbox
 {
     [DisallowMultipleComponent]
     public sealed class SteamPlayFabPurchaseExample : MonoBehaviour

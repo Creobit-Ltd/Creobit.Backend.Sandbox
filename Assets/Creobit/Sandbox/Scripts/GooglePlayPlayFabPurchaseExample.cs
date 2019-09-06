@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿#if CREOBIT_BACKEND_GOOGLEPLAY && CREOBIT_BACKEND_PLAYFAB
+using System.Collections.Generic;
+using UnityEngine.Purchasing;
+#endif
+using Creobit.Backend.Auth;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Purchasing;
 
-namespace Creobit.Backend
+namespace Creobit.Backend.Sandbox
 {
     [DisallowMultipleComponent]
     public sealed class GooglePlayPlayFabPurchaseExample : MonoBehaviour
