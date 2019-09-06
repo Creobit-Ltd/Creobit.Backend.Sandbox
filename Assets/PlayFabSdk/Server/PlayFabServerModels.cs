@@ -1117,6 +1117,9 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// Represents the request to delete a push notification template.
+    /// </summary>
     [Serializable]
     public class DeletePushNotificationTemplateRequest : PlayFabRequestCommon
     {
@@ -1836,6 +1839,7 @@ namespace PlayFab.ServerModels
         EconomyServiceInternalError,
         QueryRateLimitExceeded,
         EntityAPIKeyCreationDisabledForEntity,
+        ForbiddenByEntityPolicy,
         StudioCreationRateLimited,
         StudioCreationInProgress,
         DuplicateStudioName,
@@ -1854,6 +1858,14 @@ namespace PlayFab.ServerModels
         CloudScriptAzureFunctionsArgumentSizeExceeded,
         CloudScriptAzureFunctionsReturnSizeExceeded,
         CloudScriptAzureFunctionsHTTPRequestError,
+        VirtualCurrencyBetaGetError,
+        VirtualCurrencyBetaCreateError,
+        VirtualCurrencyBetaInitialDepositSaveError,
+        VirtualCurrencyBetaSaveError,
+        VirtualCurrencyBetaDeleteError,
+        VirtualCurrencyBetaRestoreError,
+        VirtualCurrencyBetaSaveConflict,
+        VirtualCurrencyBetaUpdateError,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -1893,22 +1905,30 @@ namespace PlayFab.ServerModels
         ExportInvalidStatusUpdate,
         ExportInvalidPrefix,
         ExportBlobContainerDoesNotExist,
-        ExportEventNameNotFound,
-        ExportExportTitleIdNotFound,
+        ExportNotFound,
         ExportCouldNotUpdate,
         ExportInvalidStorageType,
         ExportAmazonBucketDoesNotExist,
         ExportInvalidBlobStorage,
         ExportKustoException,
-        ExportKustoExceptionPartialErrorOnNewExport,
-        ExportKustoExceptionEdit,
         ExportKustoConnectionFailed,
         ExportUnknownError,
         ExportCantEditPendingExport,
         ExportLimitExports,
         ExportLimitEvents,
         TitleNotEnabledForParty,
-        PartyVersionNotFound
+        PartyVersionNotFound,
+        MultiplayerServerBuildReferencedByMatchmakingQueue,
+        ExperimentationExperimentStopped,
+        ExperimentationExperimentRunning,
+        ExperimentationExperimentNotFound,
+        ExperimentationExperimentNeverStarted,
+        ExperimentationExperimentDeleted,
+        ExperimentationClientTimeout,
+        ExperimentationExceededVariantNameLength,
+        ExperimentationExceededMaxVariantLength,
+        ExperimentInvalidId,
+        SnapshotNotFound
     }
 
     [Serializable]
@@ -3229,7 +3249,11 @@ namespace PlayFab.ServerModels
     }
 
     /// <summary>
-    /// Result of granting an item to a user
+    /// Result of granting an item to a user. Note, to retrieve additional information for an item such as Tags, Description
+    /// that are the same across all instances of the item, a call to GetCatalogItems is required. The ItemID of can be matched
+    /// to a catalog entry, which contains the additional information. Also note that Custom Data is only set when the User's
+    /// specific instance has updated the CustomData via a call to UpdateUserInventoryItemCustomData. Other fields such as
+    /// UnitPrice and UnitCurrency are only set when the item was granted via a purchase.
     /// </summary>
     [Serializable]
     public class GrantedItemInstance : PlayFabBaseModel
@@ -3296,11 +3320,11 @@ namespace PlayFab.ServerModels
         /// </summary>
         public bool Result;
         /// <summary>
-        /// Currency type for the cost of the catalog item.
+        /// Currency type for the cost of the catalog item. Not available when granting items.
         /// </summary>
         public string UnitCurrency;
         /// <summary>
-        /// Cost of the catalog item in the given currency.
+        /// Cost of the catalog item in the given currency. Not available when granting items.
         /// </summary>
         public uint UnitPrice;
         /// <summary>
@@ -3451,10 +3475,11 @@ namespace PlayFab.ServerModels
     }
 
     /// <summary>
-    /// A unique instance of an item in a user's inventory. Note, to retrieve additional information for an item instance (such
-    /// as Tags, Description, or Custom Data that are set on the root catalog item), a call to GetCatalogItems is required. The
-    /// Item ID of the instance can then be matched to a catalog entry, which contains the additional information. Also note
-    /// that Custom Data is only set here from a call to UpdateUserInventoryItemCustomData.
+    /// A unique instance of an item in a user's inventory. Note, to retrieve additional information for an item such as Tags,
+    /// Description that are the same across all instances of the item, a call to GetCatalogItems is required. The ItemID of can
+    /// be matched to a catalog entry, which contains the additional information. Also note that Custom Data is only set when
+    /// the User's specific instance has updated the CustomData via a call to UpdateUserInventoryItemCustomData. Other fields
+    /// such as UnitPrice and UnitCurrency are only set when the item was granted via a purchase.
     /// </summary>
     [Serializable]
     public class ItemInstance : PlayFabBaseModel
@@ -3509,11 +3534,11 @@ namespace PlayFab.ServerModels
         /// </summary>
         public int? RemainingUses;
         /// <summary>
-        /// Currency type for the cost of the catalog item.
+        /// Currency type for the cost of the catalog item. Not available when granting items.
         /// </summary>
         public string UnitCurrency;
         /// <summary>
-        /// Cost of the catalog item in the given currency.
+        /// Cost of the catalog item in the given currency. Not available when granting items.
         /// </summary>
         public uint UnitPrice;
         /// <summary>
@@ -3577,7 +3602,7 @@ namespace PlayFab.ServerModels
         /// </summary>
         public string PlayFabId;
         /// <summary>
-        /// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com", "").
+        /// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com/", "").
         /// </summary>
         public string XboxToken;
     }
@@ -3608,6 +3633,9 @@ namespace PlayFab.ServerModels
         public List<CharacterResult> Characters;
     }
 
+    /// <summary>
+    /// Contains the localized push notification content.
+    /// </summary>
     [Serializable]
     public class LocalizedPushNotificationProperties : PlayFabBaseModel
     {
@@ -3708,7 +3736,7 @@ namespace PlayFab.ServerModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com", "").
+        /// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com/", "").
         /// </summary>
         public string XboxToken;
     }
@@ -4789,6 +4817,9 @@ namespace PlayFab.ServerModels
         public RevokeInventoryItem Item;
     }
 
+    /// <summary>
+    /// Represents the save push notification template request.
+    /// </summary>
     [Serializable]
     public class SavePushNotificationTemplateRequest : PlayFabRequestCommon
     {
@@ -4805,7 +4836,7 @@ namespace PlayFab.ServerModels
         /// </summary>
         public string IOSPayload;
         /// <summary>
-        /// Dictionary of localized push notification templates.
+        /// Dictionary of localized push notification templates with the language as the key.
         /// </summary>
         public Dictionary<string,LocalizedPushNotificationProperties> LocalizedPushNotificationTemplates;
         /// <summary>
@@ -4814,6 +4845,9 @@ namespace PlayFab.ServerModels
         public string Name;
     }
 
+    /// <summary>
+    /// Represents the save push notification template result.
+    /// </summary>
     [Serializable]
     public class SavePushNotificationTemplateResult : PlayFabResultCommon
     {
@@ -4889,6 +4923,9 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// Represents the request for sending a push notification template to a recipient.
+    /// </summary>
     [Serializable]
     public class SendPushNotificationFromTemplateRequest : PlayFabRequestCommon
     {
@@ -5387,7 +5424,7 @@ namespace PlayFab.ServerModels
         /// </summary>
         public string PlayFabId;
         /// <summary>
-        /// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com", "").
+        /// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com/", "").
         /// </summary>
         public string XboxToken;
     }
