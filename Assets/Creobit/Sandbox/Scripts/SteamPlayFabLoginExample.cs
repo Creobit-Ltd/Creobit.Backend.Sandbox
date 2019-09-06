@@ -1,4 +1,5 @@
 ﻿using Creobit.Backend.Auth;
+using Creobit.Backend.User;
 using UnityEngine;
 
 namespace Creobit.Backend.Sandbox
