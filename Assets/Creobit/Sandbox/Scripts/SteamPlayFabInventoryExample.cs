@@ -138,7 +138,7 @@ namespace Creobit.Backend.Sandbox
         #region SteamPlayFabInventoryExample
 
         private IAuth _auth;
-        private IInventory _inventory;
+        private IInventory<IItemDefinition, IItem<IItemDefinition>> _inventory;
 
         [Header("PlayFab")]
 
