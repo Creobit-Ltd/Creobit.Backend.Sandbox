@@ -17,7 +17,7 @@ namespace Creobit.Backend.Sandbox
             var playFabAuth = new PlayFabAuth(_titleId);
             var playFabInventory = new PlayFabInventory(_catalogVersion)
             {
-                DefinitionMap = new List<(string DefinitionId, string PlayFabItemId)>
+                ItemDefinitionMap = new List<(string ItemDefinitionId, string PlayFabItemId)>
                 {
                     // Items
                     ( "bow", "Bow" ),
@@ -63,14 +63,14 @@ namespace Creobit.Backend.Sandbox
             {
                 Debug.Log("Inventory.LoadDefinitions: Invoke");
 
-                _inventory.LoadDefinitions(
+                _inventory.LoadItemDefinitions(
                     () =>
                     {
                         Debug.Log("Inventory.LoadDefinitions: Complete");
 
-                        foreach (var definition in _inventory.Definitions)
+                        foreach (var itemDefinition in _inventory.ItemDefinitions)
                         {
-                            Debug.Log($"  Definition->Id: {definition.Id}");
+                            Debug.Log($"  ItemDefinition->Id: {itemDefinition.Id}");
                         }
 
                         LoadItems();
@@ -92,7 +92,7 @@ namespace Creobit.Backend.Sandbox
 
                         foreach (var item in _inventory.Items)
                         {
-                            Debug.Log($"  Item->Definition->Id: {item.Definition.Id} Item->RemainingUses: {item.RemainingUses}");
+                            Debug.Log($"  Item->ItemDefinition->Id: {item.ItemDefinition.Id} Item->RemainingUses: {item.RemainingUses}");
                         }
                     },
                     () =>
@@ -114,7 +114,7 @@ namespace Creobit.Backend.Sandbox
                 Debug.Log("Item.Consume: Invoke");
 
                 var item = _inventory.Items
-                    .FirstOrDefault(x => x.Definition.Id == "potion");
+                    .FirstOrDefault(x => x.ItemDefinition.Id == "potion");
 
                 item?.Consume(1,
                     () =>
