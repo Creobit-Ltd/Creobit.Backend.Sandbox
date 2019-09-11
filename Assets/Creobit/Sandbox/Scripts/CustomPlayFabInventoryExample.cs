@@ -17,17 +17,25 @@ namespace Creobit.Backend.Sandbox
             var playFabAuth = new PlayFabAuth(_titleId);
             var playFabInventory = new PlayFabInventory(_catalogVersion)
             {
+                CurrencyDefinitionMap = new List<(string CurrencyDefinitionId, string PlayFabVirtualCurrencyId)>
+                {
+                    // Virtual Currencies
+                    ("Coins", "CC"),
+                    ("Gold", "GG"),
+                    // Real Currencies
+                    ("Money", "RM")
+                },
                 ItemDefinitionMap = new List<(string ItemDefinitionId, string PlayFabItemId)>
                 {
                     // Items
-                    ( "bow", "Bow" ),
-                    ( "knife", "Knife" ),
-                    ( "potion", "Potion" ),
-                    ( "shield", "Shield" ),
-                    ( "sword", "Sword" ),
+                    ("bow", "Bow"),
+                    ("knife", "Knife"),
+                    ("potion", "Potion"),
+                    ("shield", "Shield"),
+                    ("sword", "Sword"),
                     // Bundles
-                    ( "archer_pack", "ArcherPack" ),
-                    ( "swordsman_pack", "SwordsmanPack" )
+                    ("archer_pack", "ArcherPack"),
+                    ("swordsman_pack", "SwordsmanPack")
                 }
             };
 
@@ -38,95 +46,67 @@ namespace Creobit.Backend.Sandbox
         }
 #endif
 
-        private void Start()
+        private async void Start()
         {
-            Login();
+            await _auth.LoginAsync();
+            await _inventory.LoadCurrencyDefinitionsAsync();
 
-            void Login()
+            Debug.Log($"{nameof(IInventory.LoadItemDefinitions)}:");
+
+            foreach (var currencyDefinition in _inventory.CurrencyDefinitions)
             {
-                Debug.Log("Auth.Login: Invoke");
-
-                _auth.Login(
-                    () =>
-                    {
-                        Debug.Log("Auth.Login: Complete");
-
-                        LoadDefinitions();
-                    },
-                    () =>
-                    {
-                        Debug.LogError("Auth.Login: Failure");
-                    });
+                Debug.Log($"  {nameof(ICurrencyDefinition.Id)}: {currencyDefinition.Id}");
             }
 
-            void LoadDefinitions()
+            await _inventory.LoadCurrencyInstancesAsync();
+
+            Debug.Log($"{nameof(IInventory.LoadCurrencyInstances)}:");
+
+            foreach (var currencyInstance in _inventory.CurrencyInstances)
             {
-                Debug.Log("Inventory.LoadDefinitions: Invoke");
-
-                _inventory.LoadItemDefinitions(
-                    () =>
-                    {
-                        Debug.Log("Inventory.LoadDefinitions: Complete");
-
-                        foreach (var itemDefinition in _inventory.ItemDefinitions)
-                        {
-                            Debug.Log($"  ItemDefinition->Id: {itemDefinition.Id}");
-                        }
-
-                        LoadItems();
-                    },
-                    () =>
-                    {
-                        Debug.LogError("Inventory.LoadDefinitions: Failure");
-                    });
+                Debug.Log($"  {nameof(ICurrencyDefinition.Id)}: {currencyInstance.CurrencyDefinition.Id} {nameof(ICurrencyInstance.Count)}: {currencyInstance.Count}");
             }
 
-            void LoadItems()
+            await _inventory.LoadItemDefinitionsAsync();
+
+            Debug.Log($"{nameof(IInventory.LoadItemDefinitions)}:");
+
+            foreach (var itemDefinition in _inventory.ItemDefinitions)
             {
-                Debug.Log("Inventory.LoadItems: Invoke");
+                Debug.Log($"  {nameof(IItemDefinition.Id)}: {itemDefinition.Id}");
+            }
 
-                _inventory.LoadItems(
-                    () =>
-                    {
-                        Debug.Log("Inventory.LoadItems: Complete");
+            await _inventory.LoadItemInstancesAsync();
 
-                        foreach (var item in _inventory.Items)
-                        {
-                            Debug.Log($"  Item->ItemDefinition->Id: {item.ItemDefinition.Id} Item->RemainingUses: {item.RemainingUses}");
-                        }
-                    },
-                    () =>
-                    {
-                        Debug.LogError("Inventory.LoadItems: Failure");
-                    });
+            Debug.Log($"{nameof(IInventory.LoadItemInstances)}:");
+
+            foreach (var itemInstance in _inventory.ItemInstances)
+            {
+                Debug.Log($"  {nameof(IItemDefinition.Id)}: {itemInstance.ItemDefinition.Id} {nameof(IItemInstance.Count)}: {itemInstance.Count}");
             }
         }
 
-        private void Update()
+        private async void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Consume();
-            }
-
-            void Consume()
-            {
-                Debug.Log("Item.Consume: Invoke");
-
-                var item = _inventory.Items
+                var itemDefinition = _inventory.ItemDefinitions
+                    .FirstOrDefault(x => x.Id == "potion");
+                var itemInstance = _inventory.ItemInstances
                     .FirstOrDefault(x => x.ItemDefinition.Id == "potion");
 
-                item?.Consume(1,
-                    () =>
-                    {
-                        Debug.Log("Item.Consume: Complete");
-                        Debug.Log($"  Item->RemainingUses: {item.RemainingUses}");
-                    },
-                    () =>
-                    {
-                        Debug.LogError("Item.Consume: Failure");
-                        Debug.Log($"  Item->RemainingUses: {item.RemainingUses}");
-                    });
+                if (itemInstance == null)
+                {
+                    Debug.Log($"{nameof(IItemInstance.Consume)}:");
+                    Debug.Log($"  {nameof(IItemDefinition.Id)}: {itemDefinition.Id} {nameof(IItemInstance.Count)}: 0");
+                }
+                else
+                {
+                    await itemInstance.ConsumeAsync(1);
+
+                    Debug.Log($"{nameof(IItemInstance.Consume)}:");
+                    Debug.Log($"  {nameof(IItemDefinition.Id)}: {itemDefinition.Id} {nameof(IItemInstance.Count)}: {itemInstance.Count}");
+                }
             }
         }
 
@@ -134,7 +114,7 @@ namespace Creobit.Backend.Sandbox
         #region CustomPlayFabInventoryExample
 
         private IAuth _auth;
-        private IInventory<IItemDefinition, IItem<IItemDefinition>> _inventory;
+        private IInventory<ICurrencyDefinition, ICurrencyInstance<ICurrencyDefinition>, IItemDefinition, IItemInstance<IItemDefinition>> _inventory;
 
         [Header("PlayFab")]
 
