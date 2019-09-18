@@ -813,6 +813,12 @@
             configuration on Steam.  Ask Valve for help with this.
             </summary>
         </member>
+        <member name="M:Steamworks.SteamClient.Init(System.UInt32,System.Boolean)">
+            <summary>
+            Initialize the steam client.
+            If asyncCallbacks is false you need to call RunCallbacks manually every frame.
+            </summary>
+        </member>
         <member name="P:Steamworks.SteamClient.IsLoggedOn">
             <summary>
             Checks if the current user's Steam client is connected to the Steam servers.
@@ -857,6 +863,11 @@
              may not relaunch the exact executable that called it, as it will always relaunch from the version 
              installed in your Steam library folder/
              Note that during development, when not launching via Steam, this might always return true.
+            </summary>
+        </member>
+        <member name="M:Steamworks.SteamClient.ValidCheck">
+            <summary>
+            Called in interfaces that rely on this being initialized
             </summary>
         </member>
         <member name="T:Steamworks.SteamFriends">
@@ -1564,6 +1575,12 @@
         <member name="E:Steamworks.SteamServer.OnSteamServersDisconnected">
             <summary>
             Disconnected from Steam
+            </summary>
+        </member>
+        <member name="M:Steamworks.SteamServer.Init(Steamworks.AppId,Steamworks.SteamServerInit,System.Boolean)">
+            <summary>
+            Initialize the steam server.
+            If asyncCallbacks is false you need to call RunCallbacks manually every frame.
             </summary>
         </member>
         <member name="M:Steamworks.SteamServer.RunCallbacks">
@@ -2697,6 +2714,26 @@
             If this returns false the item isn#t getting downloaded.
             </summary>
         </member>
+        <member name="P:Steamworks.Ugc.Item.DownloadBytesTotal">
+            <summary>
+            If we're downloading, how big the total download is 
+            </summary>
+        </member>
+        <member name="P:Steamworks.Ugc.Item.DownloadBytesDownloaded">
+            <summary>
+            If we're downloading, how much we've downloaded
+            </summary>
+        </member>
+        <member name="P:Steamworks.Ugc.Item.SizeBytes">
+            <summary>
+            If we're installed, how big is the install
+            </summary>
+        </member>
+        <member name="P:Steamworks.Ugc.Item.DownloadAmount">
+            <summary>
+            If we're downloading our current progress as a delta betwen 0-1
+            </summary>
+        </member>
         <member name="M:Steamworks.Ugc.Item.HasTag(System.String)">
             <summary>
             A case insensitive check for tag
@@ -2777,14 +2814,15 @@
             Convert a DateTime to a unix time
             </summary>
         </member>
-        <member name="M:Steamworks.Helpers.TakeStringBuilder">
-            <summary>
-            Returns a StringBuilder. This will get returned and reused later on.
-            </summary>
-        </member>
         <member name="M:Steamworks.Helpers.TakeBuffer(System.Int32)">
             <summary>
-            Returns a StringBuilder. This will get returned and reused later on.
+            Returns a buffer. This will get returned and reused later on.
+            </summary>
+        </member>
+        <member name="T:Steamworks.PreserveAttribute">
+            <summary>
+            Prevent unity from stripping shit we depend on
+            https://docs.unity3d.com/Manual/ManagedCodeStripping.html
             </summary>
         </member>
     </members>
