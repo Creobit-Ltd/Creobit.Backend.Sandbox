@@ -316,6 +316,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _titleId: 12513
+  _linkKey: 
+  _linkKeyLenght: 16
   _appId: 695720
 --- !u!4 &1245257695
 Transform:
