@@ -1,4 +1,4 @@
-/.idea/
+.idea/
 /.vs/
 /.vscode/
 /Library/
@@ -7,3 +7,7 @@
 /Temp/
 *.csproj
 *.sln
+*.DotSettings.user
+*.DotSettings.user.meta
+Assets/Plugins/Editor/
+Assets/Plugins/Editor.meta
