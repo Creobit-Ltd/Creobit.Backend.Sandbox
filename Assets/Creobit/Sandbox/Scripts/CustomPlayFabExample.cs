@@ -30,7 +30,7 @@ namespace Creobit.Backend.Sandbox
                 ProductMap = PlayFabStoreProductMap
             };
 
-            var customPlayFabAuth = new CustomPlayFabAuth(playFabAuth, _customId);
+            var customPlayFabAuth = new CustomPlayfabAuth(playFabAuth, _customId);
 
             Auth = customPlayFabAuth;
             Inventory = playFabInventory;
