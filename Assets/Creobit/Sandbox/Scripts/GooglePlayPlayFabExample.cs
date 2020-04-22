@@ -1,8 +1,13 @@
-﻿using Creobit.Backend.Auth;
+﻿#if CREOBIT_BACKEND_GOOGLEPLAY && CREOBIT_BACKEND_PLAYFAB && CREOBIT_BACKEND_UNITY && UNITY_ANDROID
+#define IS_GOOGLE_ENABLED
+#endif
+#if IS_GOOGLE_ENABLED
+using Creobit.Backend.Auth;
 using Creobit.Backend.Inventory;
 using Creobit.Backend.Store;
 using Creobit.Backend.User;
 using Creobit.Backend.Wallet;
+#endif
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +17,7 @@ namespace Creobit.Backend.Sandbox
     {
         #region MonoBehaviour
 
-#if CREOBIT_BACKEND_GOOGLEPLAY && CREOBIT_BACKEND_PLAYFAB && CREOBIT_BACKEND_UNITY && UNITY_ANDROID
+#if IS_GOOGLE_ENABLED
         protected override void Awake()
         {
             var playFabAuth = new PlayFabAuth(_titleId);

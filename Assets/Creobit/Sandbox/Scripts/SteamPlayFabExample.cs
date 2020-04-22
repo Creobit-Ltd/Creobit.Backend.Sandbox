@@ -1,8 +1,13 @@
-﻿using Creobit.Backend.Auth;
+﻿#if CREOBIT_BACKEND_PLAYFAB && CREOBIT_BACKEND_STEAM && UNITY_STANDALONE
+#define IS_STEAM_ENABLED
+#endif
+#if IS_STEAM_ENABLED
+using Creobit.Backend.Auth;
 using Creobit.Backend.Inventory;
 using Creobit.Backend.Store;
 using Creobit.Backend.User;
 using Creobit.Backend.Wallet;
+#endif
 using UnityEngine;
 
 namespace Creobit.Backend.Sandbox
@@ -11,7 +16,7 @@ namespace Creobit.Backend.Sandbox
     {
         #region MonoBehaviour
 
-#if CREOBIT_BACKEND_PLAYFAB && CREOBIT_BACKEND_STEAM && UNITY_STANDALONE
+#if IS_STEAM_ENABLED
         protected override void Awake()
         {
             var playFabAuth = new PlayFabAuth(_titleId);
